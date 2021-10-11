@@ -21,7 +21,6 @@ repositories {
 
 dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.intellij:annotations:12.0")
     implementation(project(":models"))
-
-    compileOnly("org.jetbrains:annotations:16.0.2")
 }
