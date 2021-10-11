@@ -7,7 +7,7 @@ public class JsonLibrary {
 
     private static final String path = "/books.json";
 
-    private Map<Author, List<Book>> library;
+    private final Map<Author, List<Book>> library = new HashMap<>();
 
     public JsonLibrary() {
         val stream = this.getClass().getResourceAsStream(path);
@@ -16,7 +16,6 @@ public class JsonLibrary {
         }
         val reader = new InputStreamReader(stream);
         val books = new Gson().fromJson(reader, Book[].class);
-        library = new HashMap<>();
         for (val book: books) {
             val author = book.getAuthor();
             if (!library.containsKey(author)) {
@@ -27,7 +26,7 @@ public class JsonLibrary {
     }
 
     public List<Book> GetBooksByAuthor(Author author) {
-        if (library == null) {
+        if (library.isEmpty() || !library.containsKey(author)) {
             return Collections.emptyList();
         }
         return library.get(author);
