@@ -62,8 +62,7 @@ public class Application {
     private void workWithUser() throws NoSuchElementException, IllegalStateException {
         printWelcome();
         while (true) {
-            var str = readLine();
-            logData.setStrToLog(str);
+            logData.setStrToLog(readLine());
             mode = readMode();
             if (mode != LogMode.CONSOLE) {
                 logData.setTag(readTag());
