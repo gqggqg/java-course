@@ -1,3 +1,5 @@
+package guice;
+
 public class LogData {
 
     private static int ordinalNumber = 1;

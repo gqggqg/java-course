@@ -1,3 +1,9 @@
+package guice.logger;
+
+import guice.bind.ConsoleLog;
+import guice.bind.FileLog;
+import guice.LogData;
+
 import com.google.inject.Singleton;
 import com.google.inject.Inject;
 

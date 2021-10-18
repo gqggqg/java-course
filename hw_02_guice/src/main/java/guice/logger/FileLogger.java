@@ -1,3 +1,8 @@
+package guice.logger;
+
+import guice.Application;
+import guice.LogData;
+
 import com.google.inject.Singleton;
 
 import java.io.IOException;

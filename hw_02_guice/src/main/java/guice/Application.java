@@ -1,3 +1,10 @@
+package guice;
+
+import guice.bind.ConsoleLog;
+import guice.bind.FileLog;
+
+import guice.logger.ILogger;
+
 import com.google.inject.Inject;
 
 import java.io.File;

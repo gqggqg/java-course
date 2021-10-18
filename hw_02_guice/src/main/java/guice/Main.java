@@ -1,3 +1,7 @@
+package guice;
+
+import guice.bind.AppModule;
+
 import com.google.inject.Guice;
 import org.jetbrains.annotations.NotNull;
 

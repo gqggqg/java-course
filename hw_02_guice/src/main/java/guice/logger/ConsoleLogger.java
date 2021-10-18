@@ -1,3 +1,7 @@
+package guice.logger;
+
+import guice.LogData;
+
 import com.google.inject.Singleton;
 
 @Singleton

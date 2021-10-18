@@ -1,3 +1,10 @@
+package guice.bind;
+
+import guice.logger.CombinedLogger;
+import guice.logger.ConsoleLogger;
+import guice.logger.FileLogger;
+import guice.logger.ILogger;
+
 import com.google.inject.AbstractModule;
 
 public final class AppModule extends AbstractModule {
