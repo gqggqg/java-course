@@ -15,6 +15,8 @@ public class Application {
         COMBINED,
     }
 
+    public static final String logFilePath = "log.txt";
+
     @Inject @ConsoleLog
     private ILogger consoleLogger;
     @Inject @FileLog

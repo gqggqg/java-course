@@ -8,7 +8,7 @@ public class FileLogger implements ILogger {
 
     @Override
     public void log(LogData data) throws IOException {
-        try (FileWriter writer = new FileWriter("log.txt", true)) {
+        try (FileWriter writer = new FileWriter(Application.logFilePath, true)) {
             writer.append(data.getTaggedStrToLog());
             writer.flush();
         }
