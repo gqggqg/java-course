@@ -1,5 +1,6 @@
 import com.google.inject.Inject;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.NoSuchElementException;
@@ -32,6 +33,10 @@ public class Application {
     private LogMode mode;
 
     public void waitForInput() {
+        if (deleteLogFile()) {
+            System.out.println("The previous log file has been deleted. Hehe.\n");
+        }
+
         try (Scanner scanner = new Scanner(System.in)) {
             this.scanner = scanner;
             workWithUser();
@@ -40,6 +45,11 @@ public class Application {
         } catch (IllegalStateException  e) {
             System.out.println("We apologize. The problem is on the service side. :(");
         }
+    }
+
+    private boolean deleteLogFile() {
+        var file = new File(logFilePath);
+        return file.delete();
     }
 
     private void workWithUser() throws NoSuchElementException, IllegalStateException {
