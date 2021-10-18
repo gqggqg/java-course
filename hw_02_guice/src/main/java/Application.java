@@ -26,6 +26,7 @@ public class Application {
 
     // in order not to pass it as a method argument
     private Scanner scanner;
+
     private LogMode mode;
 
     public void waitForInput() {
