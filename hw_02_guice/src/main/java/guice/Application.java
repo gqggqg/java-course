@@ -78,7 +78,7 @@ public class Application {
                 case CONSOLE -> consoleLogger.log(logData);
                 case COMBINED -> combineLogger.log(logData);
             }
-            logData.goodLog();
+            logData.succesfulLogging();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

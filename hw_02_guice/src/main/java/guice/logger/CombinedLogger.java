@@ -20,7 +20,7 @@ public class CombinedLogger implements ILogger {
     @Override
     public void log(LogData data) throws IOException {
         consoleLogger.log(data);
-        data.goodLog();
+        data.succesfulLogging();
         fileLogger.log(data);
     }
 }

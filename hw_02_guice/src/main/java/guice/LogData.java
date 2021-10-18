@@ -22,7 +22,7 @@ public class LogData {
         return String.format("%d) <%s>%s</%s>\n", ordinalNumber, tag, strToLog, tag);
     }
 
-    public void goodLog() {
+    public void succesfulLogging() {
         ordinalNumber++;
     }
 }
