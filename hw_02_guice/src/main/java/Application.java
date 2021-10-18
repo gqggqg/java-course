@@ -1,6 +1,6 @@
-import org.jetbrains.annotations.NotNull;
 import com.google.inject.Inject;
-import lombok.Getter;
+
+import java.io.IOException;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -15,20 +15,18 @@ public class Application {
         COMBINED,
     }
 
+    @Inject @ConsoleLog
+    private ILogger consoleLogger;
+    @Inject @FileLog
+    private ILogger fileLogger;
     @Inject
-    ILogger consoleLogger;
-    @Inject @File
-    ILogger fileLogger;
-
-    @Getter
-    private String line;
-    @Getter
-    private LogMode mode;
-    @Getter
-    private String tag;
+    private ILogger combineLogger;
+    @Inject
+    private LogData logData;
 
     // in order not to pass it as a method argument
     private Scanner scanner;
+    private LogMode mode;
 
     public void waitForInput() {
         try (Scanner scanner = new Scanner(System.in)) {
@@ -44,18 +42,27 @@ public class Application {
     private void workWithUser() throws NoSuchElementException, IllegalStateException {
         printWelcome();
         while (true) {
-            line = readLine();
+            var str = readLine();
+            logData.setStrToLog(str);
             mode = readMode();
             if (mode != LogMode.CONSOLE) {
-                tag = readTag();
+                logData.setTag(readTag());
             }
             log();
         }
     }
 
     private void log() {
-        fileLogger.log();
-        consoleLogger.log();
+        try {
+            switch (mode) {
+                case FILE -> fileLogger.log(logData);
+                case CONSOLE -> consoleLogger.log(logData);
+                case COMBINED -> combineLogger.log(logData);
+            }
+            logData.goodLog();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void printWelcome() {
