@@ -55,7 +55,7 @@ public class Application {
     }
 
     private boolean deleteLogFile() {
-        var file = new File(logFilePath);
+        File file = new File(logFilePath);
         return file.delete();
     }
 
@@ -74,9 +74,15 @@ public class Application {
     private void log() {
         try {
             switch (mode) {
-                case FILE -> fileLogger.log(logData);
-                case CONSOLE -> consoleLogger.log(logData);
-                case COMBINED -> combineLogger.log(logData);
+                case FILE:
+                    fileLogger.log(logData);
+                    break;
+                case CONSOLE:
+                    consoleLogger.log(logData);
+                    break;
+                case COMBINED:
+                    combineLogger.log(logData);
+                    break;
             }
             logData.succesfulLogging();
         } catch (IOException e) {
@@ -85,10 +91,11 @@ public class Application {
     }
 
     private void printWelcome() {
-        System.out.println("""
-                    Welcome to the log service.
-                    We log your lines for you.
-                    [Key in Ctrl+D to exit]""");
+        System.out.println(
+            "Welcome to the log service.\n" +
+            "We log your lines for you.\n" +
+            "[Key in Ctrl+D to exit]"
+        );
     }
 
     private String readLine() throws NoSuchElementException, IllegalStateException {
@@ -97,13 +104,14 @@ public class Application {
     }
 
     private LogMode readMode() throws NoSuchElementException, IllegalStateException {
-        System.out.print("""
-                        Select the log mode:
-                        1. Console.
-                        2. File.
-                        3. Combined.
-                        Enter your choice (number):\040""");
-        var modeNumber = tryGetModeNumber();
+        System.out.print(
+            "Select the log mode:\n" +
+            "1. Console.\n" +
+            "2. File.\n" +
+            "3. Combined.\n" +
+            "Enter your choice (number): "
+        );
+        int modeNumber = tryGetModeNumber();
         return LogMode.values()[modeNumber];
     }
 
@@ -118,7 +126,7 @@ public class Application {
     }
 
     private int tryParse() throws NumberFormatException, NoSuchElementException, IllegalStateException {
-        var num = Integer.parseInt(scanner.nextLine());
+        int num = Integer.parseInt(scanner.nextLine());
         if (num < 1 || num > 3) {
             throw new NumberFormatException();
         }
