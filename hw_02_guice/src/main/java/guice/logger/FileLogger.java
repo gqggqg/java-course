@@ -13,7 +13,7 @@ public class FileLogger implements ILogger {
 
     @Override
     public void log(LogData data) throws IOException {
-        try (FileWriter writer = new FileWriter(Application.logFilePath, true)) {
+        try (FileWriter writer = new FileWriter(Application.LOG_FILE_PATH, true)) {
             writer.append(data.getTaggedStrToLog());
             writer.flush();
         }
