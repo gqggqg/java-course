@@ -51,11 +51,17 @@ public class Library implements ILibrary {
         System.out.printf("[TAKEN]\nCell: %d, Book: %s, Author: %s\n", cellNumber, book.getName(), book.getAuthor().getName());
     }
 
-    private void logAllBooks() {
+    @Override
+    public void printAllBooksInConsole() {
         for (Book book : books) {
             if (book != null) {
                 System.out.printf("Book: %s, Author: %s\n", book.getName(), book.getAuthor().getName());
             }
         }
+    }
+
+    @Override
+    public int size() {
+        return books.size();
     }
 }
