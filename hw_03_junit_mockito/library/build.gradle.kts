@@ -10,8 +10,9 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":models"))
+
     implementation("com.google.code.gson:gson:2.8.8")
     implementation("com.google.inject:guice:5.0.1")
     implementation("com.intellij:annotations:12.0")
-    implementation(project(":models"))
 }
