@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RunWith(GuiceJUnitRunner.class)
@@ -36,19 +37,17 @@ public class BaseTests {
 
     @Test
     public void booksOrderAndEmptyCells() {
-        ILibrary library = libraryFactory.library(110);
-        int librarySize = library.size();
-        Book[] libraryBooks = new Book[librarySize];
-        for (int i = 0; i < librarySize; i++) {
-            libraryBooks[i] = library.takeBook(i);
-        }
+        int capacity = 110;
+        ArrayList<Book> libraryBooks = libraryFactory.library(capacity).getBooks();
 
-        Collection<Book> jsonBooks = bookFactory.books();
-        int diffSize = librarySize - jsonBooks.size();
-        for (int i = 0; i < diffSize; i++) {
+        ArrayList<Book> jsonBooks = (ArrayList<Book>)bookFactory.books();
+        for (int i = jsonBooks.size(); i < capacity; i++) {
             jsonBooks.add(null);
         }
 
-        Assert.assertArrayEquals(jsonBooks.toArray(), libraryBooks);
+        System.out.println(libraryBooks.size());
+        System.out.println(jsonBooks.size());
+
+        Assert.assertArrayEquals(libraryBooks.toArray(), jsonBooks.toArray());
     }
 }
