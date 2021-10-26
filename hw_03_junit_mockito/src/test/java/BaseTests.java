@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 @RunWith(GuiceJUnitRunner.class)
@@ -87,5 +89,23 @@ public class BaseTests {
     public void addingBookToFilledLibrary() {
         int capacity = 100;
         libraryFactory.library(capacity).addBook(new Book(new Author("J.R."), "Harry Potter"));
+    }
+
+    @Test
+    public void printBookInfo() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream newOut = new PrintStream(baos);
+        PrintStream oldOut = System.out;
+        System.setOut(newOut);
+
+        int cellNumber = 56;
+        Book book = libraryFactory.library(110).takeBook(cellNumber);
+        String expected = String.format("[TAKEN]\nCell: %d, Book: %s, Author: %s\n", cellNumber, book.getName(), book.getAuthor().getName());
+        String actual = baos.toString();
+
+        System.out.flush();
+        System.setOut(oldOut);
+
+        Assert.assertEquals(expected, actual);
     }
 }
