@@ -17,6 +17,10 @@ public class Library implements ILibrary {
 
         this.books = new ArrayList<>(capacity);
         this.books.addAll(books);
+
+        for (int i = books.size(); i < capacity; i++) {
+            this.books.add(null);
+        }
     }
 
     @Override
