@@ -55,6 +55,12 @@ public class Library implements ILibrary {
         System.out.printf("[TAKEN]\nCell: %d, Book: %s, Author: %s\n", cellNumber, book.getName(), book.getAuthor().getName());
     }
 
+    @NotNull
+    @Override
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
     @Override
     public void printAllBooksInConsole() {
         for (Book book : books) {
