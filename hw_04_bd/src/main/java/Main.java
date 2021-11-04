@@ -4,7 +4,7 @@ import org.flywaydb.core.Flyway;
 public class Main {
 
     public static final @NotNull String CONNECTION = "jdbc:postgresql://localhost:5432/";
-    public static final @NotNull String DB_NAME = "OnlineGameDB";
+    public static final @NotNull String DB_NAME = "CoursesDB";
     public static final @NotNull String USERNAME = "postgres";
     public static final @NotNull String PASSWORD = "postgres";
 
