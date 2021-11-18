@@ -3,7 +3,9 @@ package DAO;
 import generated.tables.records.WaybillRecord;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jooq.exception.DataAccessException;
 import org.jooq.DSLContext;
+import java.util.Collections;
 import java.util.List;
 
 import static generated.Tables.WAYBILL;
@@ -16,48 +18,87 @@ public class WaybillDAO implements DAO<WaybillRecord> {
     @NotNull
     @Override
     public WaybillRecord get(long id) {
-        var record = context
-                .selectFrom(WAYBILL)
-                .where(WAYBILL.NUMBER.eq(id))
-                .fetchOne();
+        WaybillRecord record = null;
+
+        try {
+            record = context
+                    .selectFrom(WAYBILL)
+                    .where(WAYBILL.NUMBER.eq(id))
+                    .fetchOne();
+        } catch (DataAccessException e) {
+            System.err.println("Something went wrong executing the query.");
+            e.printStackTrace();
+        }
+
         if (record == null) {
             return new WaybillRecord();
         }
+
         return record;
     }
 
     @NotNull
     @Override
     public List<WaybillRecord> all() {
-        return context
-                .selectFrom(WAYBILL)
-                .fetch();
+        List<WaybillRecord> record = Collections.emptyList();
+
+        try {
+            return context
+                    .selectFrom(WAYBILL)
+                    .fetch();
+        } catch (DataAccessException e) {
+            System.err.println("Something went wrong executing the query.");
+            e.printStackTrace();
+        }
+
+        return record;
     }
 
     @Override
     public boolean save(@NotNull WaybillRecord record) {
-        return context
-                .insertInto(WAYBILL)
-                .values(record.getNumber(),
-                        record.getDate(),
-                        record.getOrganizationId())
-                .execute() == 1;
+        try {
+            return context
+                    .insertInto(WAYBILL)
+                    .values(record.getNumber(),
+                            record.getDate(),
+                            record.getOrganizationId())
+                    .execute() == 1;
+        } catch (DataAccessException e) {
+            System.err.println("Something went wrong executing the query.");
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
     public boolean update(@NotNull WaybillRecord record) {
-        return context
-                .update(WAYBILL)
-                .set(context.newRecord(WAYBILL, record))
-                .where(WAYBILL.NUMBER.eq(record.getNumber()))
-                .execute() == 1;
+        try {
+            return context
+                    .update(WAYBILL)
+                    .set(context.newRecord(WAYBILL, record))
+                    .where(WAYBILL.NUMBER.eq(record.getNumber()))
+                    .execute() == 1;
+        } catch (DataAccessException e) {
+            System.err.println("Something went wrong executing the query.");
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
     public boolean delete(@NotNull WaybillRecord record) {
-        return context
-                .deleteFrom(WAYBILL)
-                .where(WAYBILL.NUMBER.eq(record.getNumber()))
-                .execute() == 1;
+        try {
+            return context
+                    .deleteFrom(WAYBILL)
+                    .where(WAYBILL.NUMBER.eq(record.getNumber()))
+                    .execute() == 1;
+        } catch (DataAccessException e) {
+            System.err.println("Something went wrong executing the query.");
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
