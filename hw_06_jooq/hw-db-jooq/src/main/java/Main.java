@@ -4,6 +4,7 @@ import generated.tables.records.*;
 import org.jetbrains.annotations.NotNull;
 
 import org.jooq.*;
+import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -58,12 +59,15 @@ public class Main {
         } catch (SQLException e) {
             System.err.println("Connection failure.");
             e.printStackTrace();
+        } catch (DataAccessException e) {
+            System.err.println("Something went wrong executing the query.");
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static Result<Record3<Long, String, BigDecimal>> selectTopTenOrganizationsByProductQuantity(DSLContext context) {
+    public static Result<Record3<Long, String, BigDecimal>> selectTopTenOrganizationsByProductQuantity(DSLContext context) throws DataAccessException {
         return context
                 .select(
                         ORGANIZATION.INN,
@@ -80,7 +84,7 @@ public class Main {
                 .fetch();
     }
 
-    public static Result<Record2<Long, String>> selectOrganizationsByTotalQuantityProductAboveLimit(DSLContext context, long productId, BigDecimal limit) {
+    public static Result<Record2<Long, String>> selectOrganizationsByTotalQuantityProductAboveLimit(DSLContext context, long productId, BigDecimal limit) throws DataAccessException {
         return context
                 .select(ORGANIZATION.INN,
                         ORGANIZATION.NAME)
@@ -94,7 +98,7 @@ public class Main {
                 .fetch();
     }
 
-    public static Result<Record4<String, LocalDate, BigDecimal, BigDecimal>> calculateProductQuantityAndTotalPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) {
+    public static Result<Record4<String, LocalDate, BigDecimal, BigDecimal>> calculateProductQuantityAndTotalPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
         return context
                 .select(PRODUCT.NAME,
                         WAYBILL.DATE,
@@ -109,7 +113,7 @@ public class Main {
                 .fetch();
     }
 
-    public static Result<Record1<BigDecimal>> calculateAVGPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) {
+    public static Result<Record1<BigDecimal>> calculateAVGPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
         return context
                 .select(avg(ITEM.PRICE))
                 .from(WAYBILL)
