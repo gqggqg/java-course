@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.exception.DataAccessException;
 import org.jooq.DSLContext;
-import java.util.Collections;
 import java.util.List;
 
 import static generated.Tables.ITEM;
@@ -17,18 +16,11 @@ public class ItemDAO implements DAO<ItemRecord> {
 
     @NotNull
     @Override
-    public ItemRecord get(long id) {
-        ItemRecord record = null;
-
-        try {
-            record = context
-                    .selectFrom(ITEM)
-                    .where(ITEM.ID.eq(id))
-                    .fetchOne();
-        } catch (DataAccessException e) {
-            System.err.println("Something went wrong executing the query.");
-            e.printStackTrace();
-        }
+    public ItemRecord get(long id) throws DataAccessException {
+        var record = context
+                .selectFrom(ITEM)
+                .where(ITEM.ID.eq(id))
+                .fetchOne();
 
         if (record == null) {
             return new ItemRecord();
@@ -39,67 +31,37 @@ public class ItemDAO implements DAO<ItemRecord> {
 
     @NotNull
     @Override
-    public List<ItemRecord> all() {
-        List<ItemRecord> record = Collections.emptyList();
-
-        try {
-            return context
-                    .selectFrom(ITEM)
-                    .fetch();
-        } catch (DataAccessException e) {
-            System.err.println("Something went wrong executing the query.");
-            e.printStackTrace();
-        }
-
-        return record;
+    public List<ItemRecord> all() throws DataAccessException {
+        return context
+                .selectFrom(ITEM)
+                .fetch();
     }
 
     @Override
-    public boolean save(@NotNull ItemRecord record) {
-        try {
-            return context
-                    .insertInto(ITEM)
-                    .values(record.getId(),
-                            record.getPrice(),
-                            record.getProductId(),
-                            record.getQuantity())
-                    .execute() == 1;
-        } catch (DataAccessException e) {
-            System.err.println("Something went wrong executing the query.");
-            e.printStackTrace();
-        }
-
-        return false;
+    public boolean save(@NotNull ItemRecord record) throws DataAccessException {
+        return context
+                .insertInto(ITEM)
+                .values(record.getId(),
+                        record.getPrice(),
+                        record.getProductId(),
+                        record.getQuantity())
+                .execute() == 1;
     }
 
     @Override
-    public boolean update(@NotNull ItemRecord record) {
-        try {
-            return context
-                    .update(ITEM)
-                    .set(context.newRecord(ITEM, record))
-                    .where(ITEM.ID.eq(record.getId()))
-                    .execute() == 1;
-        } catch (DataAccessException e) {
-            System.err.println("Something went wrong executing the query.");
-            e.printStackTrace();
-        }
-
-        return false;
+    public boolean update(@NotNull ItemRecord record) throws DataAccessException {
+        return context
+                .update(ITEM)
+                .set(context.newRecord(ITEM, record))
+                .where(ITEM.ID.eq(record.getId()))
+                .execute() == 1;
     }
 
     @Override
-    public boolean delete(@NotNull ItemRecord record) {
-        try {
-            return context
-                    .deleteFrom(ITEM)
-                    .where(ITEM.ID.eq(record.getId()))
-                    .execute() == 1;
-        } catch (DataAccessException e) {
-            System.err.println("Something went wrong executing the query.");
-            e.printStackTrace();
-        }
-
-        return false;
+    public boolean delete(@NotNull ItemRecord record) throws DataAccessException {
+        return context
+                .deleteFrom(ITEM)
+                .where(ITEM.ID.eq(record.getId()))
+                .execute() == 1;
     }
 }
