@@ -51,9 +51,14 @@ public class Main {
             }
 
             System.out.println();
-
             var avgPrice = calculateAVGPriceForPeriod(context, startDate, endData);
             System.out.printf("Average price of received product for the period: %.2f\n", avgPrice);
+
+            System.out.println();
+            System.out.println("Products delivered by organizations for the period.");
+            for (Record record : selectProductsDeliveredByOrganizationsForPeriod(context, startDate, endData)) {
+                System.out.println(record);
+            }
 
         } catch (SQLException e) {
             System.err.println("Connection failure.");
@@ -124,6 +129,26 @@ public class Main {
                 .join(PRODUCT).on(PRODUCT.ID.eq(ITEM.PRODUCT_ID.cast(Long.class)))
                 .where(WAYBILL.DATE.between(startDate, endData))
                 .fetchOneInto(BigDecimal.class);
+    }
+
+    public static Result<Record3<Long, String, String>> selectProductsDeliveredByOrganizationsForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
+        var dateCondition = WAYBILL.DATE.between(startDate, endData);
+        var waybillCondition = PRODUCT.CODE.isNull().and(WAYBILL.NUMBER.isNull());
+        var productCondition = PRODUCT.CODE.isNotNull();
+
+        return context
+                .select(ORGANIZATION.INN,
+                        ORGANIZATION.NAME,
+                        PRODUCT.NAME)
+                .from(ORGANIZATION)
+                .leftJoin(WAYBILL).on(WAYBILL.ORGANIZATION_ID.eq(ORGANIZATION.INN))
+                .leftJoin(WAYBILL_ITEM).on(WAYBILL_ITEM.WAYBILL_ID.eq(WAYBILL.NUMBER))
+                .leftJoin(ITEM).on(ITEM.ID.eq(WAYBILL_ITEM.ITEM_ID.cast(Long.class)))
+                .leftJoin(PRODUCT).on(PRODUCT.ID.eq(ITEM.PRODUCT_ID.cast(Long.class)))
+                .where(dateCondition.and(waybillCondition.or(productCondition)))
+                .groupBy(ORGANIZATION.INN, ORGANIZATION.NAME, PRODUCT.NAME)
+                .orderBy(ORGANIZATION.INN)
+                .fetch();
     }
 
     public static void fillDB(DSLContext context) {
