@@ -68,18 +68,21 @@ public class Main {
     }
 
     public static Result<Record3<Long, String, BigDecimal>> selectTopTenOrganizationsByProductQuantity(DSLContext context) throws DataAccessException {
+        final String itemsSum = "ITEMS_SUM";
+        final Field<BigDecimal> sumField = sum(ITEM.QUANTITY).as(itemsSum);
+
         return context
                 .select(
                         ORGANIZATION.INN,
                         ORGANIZATION.NAME,
-                        sum(ITEM.QUANTITY)
+                        sumField
                 )
                 .from(ORGANIZATION)
                 .join(WAYBILL).on(WAYBILL.ORGANIZATION_ID.eq(ORGANIZATION.INN))
                 .join(WAYBILL_ITEM).on(WAYBILL_ITEM.WAYBILL_ID.eq(WAYBILL.NUMBER))
                 .join(ITEM).on(ITEM.ID.eq(WAYBILL_ITEM.ITEM_ID.cast(Long.class)))
                 .groupBy(ORGANIZATION.INN, ORGANIZATION.NAME)
-                .orderBy(3)
+                .orderBy(sumField.desc())
                 .limit(10)
                 .fetch();
     }
