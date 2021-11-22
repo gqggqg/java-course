@@ -71,7 +71,8 @@ public class Main {
         }
     }
 
-    public static Result<Record3<Long, String, BigDecimal>> selectTopTenOrganizationsByProductQuantity(DSLContext context) throws DataAccessException {
+    @NotNull
+    public static Result<Record3<Long, String, BigDecimal>> selectTopTenOrganizationsByProductQuantity(@NotNull DSLContext context) throws DataAccessException {
         final String itemsSum = "ITEMS_SUM";
         final Field<BigDecimal> sumField = sum(ITEM.QUANTITY).as(itemsSum);
 
@@ -91,7 +92,8 @@ public class Main {
                 .fetch();
     }
 
-    public static Result<Record2<Long, String>> selectOrganizationsByTotalQuantityProductAboveLimit(DSLContext context, long productId, BigDecimal limit) throws DataAccessException {
+    @NotNull
+    public static Result<Record2<Long, String>> selectOrganizationsByTotalQuantityProductAboveLimit(@NotNull DSLContext context, long productId, BigDecimal limit) throws DataAccessException {
         return context
                 .select(ORGANIZATION.INN,
                         ORGANIZATION.NAME)
@@ -105,7 +107,8 @@ public class Main {
                 .fetch();
     }
 
-    public static Result<Record4<String, LocalDate, BigDecimal, BigDecimal>> calculateProductQuantityAndTotalPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
+    @NotNull
+    public static Result<Record4<String, LocalDate, BigDecimal, BigDecimal>> calculateProductQuantityAndTotalPriceForPeriod(@NotNull DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
         return context
                 .select(PRODUCT.NAME,
                         WAYBILL.DATE,
@@ -120,7 +123,7 @@ public class Main {
                 .fetch();
     }
 
-    public static BigDecimal calculateAVGPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
+    public static BigDecimal calculateAVGPriceForPeriod(@NotNull DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
         return context
                 .select(avg(ITEM.PRICE))
                 .from(WAYBILL)
@@ -131,7 +134,8 @@ public class Main {
                 .fetchOneInto(BigDecimal.class);
     }
 
-    public static Result<Record3<Long, String, String>> selectProductsDeliveredByOrganizationsForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
+    @NotNull
+    public static Result<Record3<Long, String, String>> selectProductsDeliveredByOrganizationsForPeriod(@NotNull DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
         var dateCondition = WAYBILL.DATE.between(startDate, endData);
         var waybillCondition = PRODUCT.CODE.isNull().and(WAYBILL.NUMBER.isNull());
         var productCondition = PRODUCT.CODE.isNotNull();
