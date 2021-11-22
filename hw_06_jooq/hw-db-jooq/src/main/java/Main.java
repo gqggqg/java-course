@@ -51,10 +51,9 @@ public class Main {
             }
 
             System.out.println();
-            System.out.println("Average price of received product for the period.");
-            for (Record record : calculateAVGPriceForPeriod(context, startDate, endData)) {
-                System.out.println(record);
-            }
+
+            var avgPrice = calculateAVGPriceForPeriod(context, startDate, endData);
+            System.out.printf("Average price of received product for the period: %.2f\n", avgPrice);
 
         } catch (SQLException e) {
             System.err.println("Connection failure.");
@@ -116,7 +115,7 @@ public class Main {
                 .fetch();
     }
 
-    public static Result<Record1<BigDecimal>> calculateAVGPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
+    public static BigDecimal calculateAVGPriceForPeriod(DSLContext context, LocalDate startDate, LocalDate endData) throws DataAccessException {
         return context
                 .select(avg(ITEM.PRICE))
                 .from(WAYBILL)
@@ -124,7 +123,7 @@ public class Main {
                 .join(ITEM).on(ITEM.ID.eq(WAYBILL_ITEM.ITEM_ID.cast(Long.class)))
                 .join(PRODUCT).on(PRODUCT.ID.eq(ITEM.PRODUCT_ID.cast(Long.class)))
                 .where(WAYBILL.DATE.between(startDate, endData))
-                .fetch();
+                .fetchOneInto(BigDecimal.class);
     }
 
     public static void fillDB(DSLContext context) {
