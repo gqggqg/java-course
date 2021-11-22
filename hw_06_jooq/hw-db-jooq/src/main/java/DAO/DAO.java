@@ -10,9 +10,9 @@ public interface DAO<T> {
 
     @NotNull List<T> all();
 
-    boolean save(@NotNull T record);
+    void save(@NotNull T record);
 
-    boolean update(@NotNull T record);
+    void update(@NotNull T record);
 
-    boolean delete(@NotNull T record);
+    void delete(@NotNull T record);
 }

@@ -38,30 +38,30 @@ public class ItemDAO implements DAO<ItemRecord> {
     }
 
     @Override
-    public boolean save(@NotNull ItemRecord record) throws DataAccessException {
-        return context
+    public void save(@NotNull ItemRecord record) throws DataAccessException {
+        context
                 .insertInto(ITEM)
                 .values(record.getId(),
                         record.getPrice(),
                         record.getProductId(),
                         record.getQuantity())
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean update(@NotNull ItemRecord record) throws DataAccessException {
-        return context
+    public void update(@NotNull ItemRecord record) throws DataAccessException {
+        context
                 .update(ITEM)
                 .set(context.newRecord(ITEM, record))
                 .where(ITEM.ID.eq(record.getId()))
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean delete(@NotNull ItemRecord record) throws DataAccessException {
-        return context
+    public void delete(@NotNull ItemRecord record) throws DataAccessException {
+        context
                 .deleteFrom(ITEM)
                 .where(ITEM.ID.eq(record.getId()))
-                .execute() == 1;
+                .execute();
     }
 }

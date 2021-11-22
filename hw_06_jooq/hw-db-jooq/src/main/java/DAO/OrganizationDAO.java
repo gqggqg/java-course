@@ -38,29 +38,29 @@ public class OrganizationDAO implements DAO<OrganizationRecord> {
     }
 
     @Override
-    public boolean save(@NotNull OrganizationRecord record) throws DataAccessException {
-        return context
+    public void save(@NotNull OrganizationRecord record) throws DataAccessException {
+        context
                 .insertInto(ORGANIZATION)
                 .values(record.getName(),
                         record.getInn(),
                         record.getAccount())
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean update(@NotNull OrganizationRecord record) throws DataAccessException {
-        return context
+    public void update(@NotNull OrganizationRecord record) throws DataAccessException {
+        context
                 .update(ORGANIZATION)
                 .set(context.newRecord(ORGANIZATION, record))
                 .where(ORGANIZATION.INN.eq(record.getInn()))
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean delete(@NotNull OrganizationRecord record) throws DataAccessException {
-        return context
+    public void delete(@NotNull OrganizationRecord record) throws DataAccessException {
+        context
                 .deleteFrom(ORGANIZATION)
                 .where(ORGANIZATION.INN.eq(record.getInn()))
-                .execute() == 1;
+                .execute();
     }
 }

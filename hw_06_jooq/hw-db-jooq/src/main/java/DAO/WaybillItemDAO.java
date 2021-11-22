@@ -38,29 +38,29 @@ public class WaybillItemDAO implements DAO<WaybillItemRecord> {
     }
 
     @Override
-    public boolean save(@NotNull WaybillItemRecord record) throws DataAccessException {
-        return context
+    public void save(@NotNull WaybillItemRecord record) throws DataAccessException {
+        context
                 .insertInto(WAYBILL_ITEM)
                 .values(record.getId(),
                         record.getWaybillId(),
                         record.getItemId())
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean update(@NotNull WaybillItemRecord record) throws DataAccessException {
-        return context
+    public void update(@NotNull WaybillItemRecord record) throws DataAccessException {
+        context
                 .update(WAYBILL_ITEM)
                 .set(context.newRecord(WAYBILL_ITEM, record))
                 .where(WAYBILL_ITEM.ID.eq(record.getId()))
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean delete(@NotNull WaybillItemRecord record) throws DataAccessException {
-        return context
+    public void delete(@NotNull WaybillItemRecord record) throws DataAccessException {
+        context
                 .deleteFrom(WAYBILL_ITEM)
                 .where(WAYBILL_ITEM.ID.eq(record.getId()))
-                .execute() == 1;
+                .execute();
     }
 }

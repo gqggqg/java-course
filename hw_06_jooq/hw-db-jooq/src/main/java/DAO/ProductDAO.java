@@ -38,29 +38,29 @@ public class ProductDAO implements DAO<ProductRecord> {
     }
 
     @Override
-    public boolean save(@NotNull ProductRecord record) throws DataAccessException {
-        return context
+    public void save(@NotNull ProductRecord record) throws DataAccessException {
+        context
                 .insertInto(PRODUCT)
                 .values(record.getId(),
                         record.getName(),
                         record.getCode())
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean update(@NotNull ProductRecord record) throws DataAccessException {
-        return context
+    public void update(@NotNull ProductRecord record) throws DataAccessException {
+        context
                 .update(PRODUCT)
                 .set(context.newRecord(PRODUCT, record))
                 .where(PRODUCT.ID.eq(record.getId()))
-                .execute() == 1;
+                .execute();
     }
 
     @Override
-    public boolean delete(@NotNull ProductRecord record) throws DataAccessException {
-        return context
+    public void delete(@NotNull ProductRecord record) throws DataAccessException {
+        context
                 .deleteFrom(PRODUCT)
                 .where(PRODUCT.ID.eq(record.getId()))
-                .execute() == 1;
+                .execute();
     }
 }
