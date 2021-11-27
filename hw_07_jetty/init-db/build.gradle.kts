@@ -1,4 +1,3 @@
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.22")
-    annotationProcessor("org.projectlombok:lombok:1.18.22")
+    implementation("org.flywaydb:flyway-core:8.0.2")
 }

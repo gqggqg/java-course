@@ -1,5 +1,13 @@
+plugins {
+    id("nu.studer.jooq") version "6.0.1"
+}
+
 dependencies {
-    jooqGenerator("org.postgresql:postgresql:42.2.9")
+    jooqGenerator("org.postgresql:postgresql:42.3.1")
+
+    implementation("org.jooq:jooq:3.15.4")
+    implementation("org.jooq:jooq-codegen:3.15.4")
+    implementation("org.jooq:jooq-meta:3.15.4")
 }
 
 jooq {
