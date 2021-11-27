@@ -1,6 +1,6 @@
 dependencies {
-    implementation("org.eclipse.jetty:jetty-server:11.0.6")
-    implementation("org.eclipse.jetty:jetty-servlet:11.0.6")
+    implementation("org.eclipse.jetty:jetty-server:9.4.33.v20201020")
+    implementation("org.eclipse.jetty:jetty-servlet:9.4.33.v20201020")
 
     implementation("org.jooq:jooq:3.15.4")
 
