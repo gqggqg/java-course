@@ -1,5 +1,5 @@
-INSERT INTO security.roles(role) VALUES('admin');
-INSERT INTO security.roles(role) VALUES('user');
+INSERT INTO security.roles(role) VALUES('manager');
+INSERT INTO security.roles(role) VALUES('guest');
 
 INSERT INTO security.users(name,password) VALUES('admin', 'admin');
 INSERT INTO security.users(name,password) VALUES('user', 'user');
