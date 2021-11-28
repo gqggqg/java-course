@@ -30,7 +30,7 @@ public class Main {
         context.setContextPath("/");
         final URL resource = Main.class.getResource("/static");
         context.setBaseResource(Resource.newResource(Objects.requireNonNull(resource).toExternalForm()));
-        context.setWelcomeFiles(new String[]{"index.html"});
+        context.setWelcomeFiles(new String[]{"welcome.html"});
 
         context.addServlet(
                 new ServletHolder(
