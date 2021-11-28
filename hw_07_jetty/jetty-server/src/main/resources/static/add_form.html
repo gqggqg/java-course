@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product</title>
+</head>
+<body>
+
+  <form action="/db/add" method="post">
+    <label for="id">Id:</label><br>
+    <input type="text" id="id" name="id" required minlength="1" maxlength="2147483647"><br>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" required><br>
+    <label for="manufacturer">Manufacturer:</label><br>
+    <input type="text" id="manufacturer" name="manufacturer" required><br>
+    <label for="quantity">Quantity:</label><br>
+    <input type="text" id="quantity" name="quantity" required minlength="0" maxlength="2147483647"><br>
+    <p><input type="submit"/></p>
+  </form>
+
+</body>
+</html>

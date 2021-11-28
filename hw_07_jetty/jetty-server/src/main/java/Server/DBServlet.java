@@ -9,13 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import java.nio.charset.StandardCharsets;
@@ -28,6 +26,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jooq.impl.DSL;
+
+import static generated.Tables.PRODUCT;
 
 @AllArgsConstructor
 public class DBServlet extends HttpServlet {
@@ -68,6 +68,32 @@ public class DBServlet extends HttpServlet {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            final int id = Integer.parseInt(req.getParameter("id"));
+            final String name = req.getParameter("name");
+            final String manufacturer = req.getParameter("manufacturer");
+            final long quantity = Long.parseLong(req.getParameter("quantity"));
+
+            try (var connection = DriverManager.getConnection(url, login, password)) {
+                final DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+                if (context.select().from(PRODUCT).where(PRODUCT.ID.eq(id)).execute() == 0) {
+                    var productDAO = new ProductDAO(context);
+                    productDAO.save(new ProductRecord(id, name, manufacturer, quantity));
+                    resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
     }
 
     @NotNull

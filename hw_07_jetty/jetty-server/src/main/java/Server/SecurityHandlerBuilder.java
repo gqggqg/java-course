@@ -28,7 +28,7 @@ public final class SecurityHandlerBuilder {
 
         constraintMappings.addAll(constraintFullMapping(
                 buildConstraint(ROLE_MANAGER),
-                asList("/index.html", "/info.html")
+                asList("/index.html", "/info.html", "/add_form.html")
         ));
 
         constraintMappings.addAll(constraintGetMapping(
