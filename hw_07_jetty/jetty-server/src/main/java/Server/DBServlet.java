@@ -52,7 +52,7 @@ public class DBServlet extends HttpServlet {
         }
 
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        try (var inputStream = classLoader.getResourceAsStream("products.html")) {
+        try (var inputStream = classLoader.getResourceAsStream("product_table.html")) {
             try (var inputStreamReader = new InputStreamReader(Objects.requireNonNull(inputStream), StandardCharsets.UTF_8)) {
                 try (var reader = new BufferedReader(inputStreamReader)) {
                     String html = reader
