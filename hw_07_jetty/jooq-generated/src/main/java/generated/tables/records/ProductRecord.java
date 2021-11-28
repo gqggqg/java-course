@@ -22,7 +22,7 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>public.product.id</code>.
+     * Setter for <code>db.product.id</code>.
      */
     public ProductRecord setId(Integer value) {
         set(0, value);
@@ -30,14 +30,14 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
     }
 
     /**
-     * Getter for <code>public.product.id</code>.
+     * Getter for <code>db.product.id</code>.
      */
     public Integer getId() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>public.product.name</code>.
+     * Setter for <code>db.product.name</code>.
      */
     public ProductRecord setName(String value) {
         set(1, value);
@@ -45,14 +45,14 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
     }
 
     /**
-     * Getter for <code>public.product.name</code>.
+     * Getter for <code>db.product.name</code>.
      */
     public String getName() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>public.product.manufacturer</code>.
+     * Setter for <code>db.product.manufacturer</code>.
      */
     public ProductRecord setManufacturer(String value) {
         set(2, value);
@@ -60,14 +60,14 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
     }
 
     /**
-     * Getter for <code>public.product.manufacturer</code>.
+     * Getter for <code>db.product.manufacturer</code>.
      */
     public String getManufacturer() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>public.product.quantity</code>.
+     * Setter for <code>db.product.quantity</code>.
      */
     public ProductRecord setQuantity(Long value) {
         set(3, value);
@@ -75,7 +75,7 @@ public class ProductRecord extends UpdatableRecordImpl<ProductRecord> implements
     }
 
     /**
-     * Getter for <code>public.product.quantity</code>.
+     * Getter for <code>db.product.quantity</code>.
      */
     public Long getQuantity() {
         return (Long) get(3);

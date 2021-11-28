@@ -8,13 +8,13 @@ import generated.tables.Product;
 
 
 /**
- * Convenience access to all tables in public.
+ * Convenience access to all tables in db.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**
-     * The table <code>public.product</code>.
+     * The table <code>db.product</code>.
      */
     public static final Product PRODUCT = Product.PRODUCT;
 }

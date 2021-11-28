@@ -32,8 +32,7 @@ jooq {
 
                     database.apply {
                         name = "org.jooq.meta.postgres.PostgresDatabase"
-                        inputSchema = "public"
-                        excludes = "flyway_schema_history"
+                        inputSchema = "db"
                     }
 
                     generate.apply {

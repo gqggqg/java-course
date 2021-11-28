@@ -4,8 +4,8 @@
 package generated.tables;
 
 
+import generated.Db;
 import generated.Keys;
-import generated.Public;
 import generated.tables.records.ProductRecord;
 
 import org.jooq.Field;
@@ -33,7 +33,7 @@ public class Product extends TableImpl<ProductRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The reference instance of <code>public.product</code>
+     * The reference instance of <code>db.product</code>
      */
     public static final Product PRODUCT = new Product();
 
@@ -46,22 +46,22 @@ public class Product extends TableImpl<ProductRecord> {
     }
 
     /**
-     * The column <code>public.product.id</code>.
+     * The column <code>db.product.id</code>.
      */
     public final TableField<ProductRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.product.name</code>.
+     * The column <code>db.product.name</code>.
      */
     public final TableField<ProductRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR.nullable(false), this, "");
 
     /**
-     * The column <code>public.product.manufacturer</code>.
+     * The column <code>db.product.manufacturer</code>.
      */
     public final TableField<ProductRecord, String> MANUFACTURER = createField(DSL.name("manufacturer"), SQLDataType.VARCHAR.nullable(false), this, "");
 
     /**
-     * The column <code>public.product.quantity</code>.
+     * The column <code>db.product.quantity</code>.
      */
     public final TableField<ProductRecord, Long> QUANTITY = createField(DSL.name("quantity"), SQLDataType.BIGINT.nullable(false), this, "");
 
@@ -74,21 +74,21 @@ public class Product extends TableImpl<ProductRecord> {
     }
 
     /**
-     * Create an aliased <code>public.product</code> table reference
+     * Create an aliased <code>db.product</code> table reference
      */
     public Product(String alias) {
         this(DSL.name(alias), PRODUCT);
     }
 
     /**
-     * Create an aliased <code>public.product</code> table reference
+     * Create an aliased <code>db.product</code> table reference
      */
     public Product(Name alias) {
         this(alias, PRODUCT);
     }
 
     /**
-     * Create a <code>public.product</code> table reference
+     * Create a <code>db.product</code> table reference
      */
     public Product() {
         this(DSL.name("product"), null);
@@ -100,7 +100,7 @@ public class Product extends TableImpl<ProductRecord> {
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Public.PUBLIC;
+        return aliased() ? null : Db.DB;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Product extends TableImpl<ProductRecord> {
 
     @Override
     public UniqueKey<ProductRecord> getPrimaryKey() {
-        return Keys.PRODUCT_PK;
+        return Keys.PRODUCT_PKEY;
     }
 
     @Override
