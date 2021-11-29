@@ -14,7 +14,7 @@ dependencies {
     implementation("org.glassfish.jersey.media:jersey-media-json-jackson:2.32")
     implementation("org.glassfish.jersey.media:jersey-media-multipart:2.32")
 
-    implementation("javax.xml.bind:jaxb-api:2.1.1")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("javax.ws.rs:javax.ws.rs-api:2.1.1")
 
     implementation(project(":init-db"))
