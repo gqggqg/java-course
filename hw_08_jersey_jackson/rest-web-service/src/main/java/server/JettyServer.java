@@ -5,7 +5,6 @@ import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 
-@SuppressWarnings({"NotNullNullableValidation"})
 public enum JettyServer {
     ;
 
