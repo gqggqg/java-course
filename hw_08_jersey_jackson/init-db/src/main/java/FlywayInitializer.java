@@ -13,6 +13,7 @@ public final class FlywayInitializer {
                         CREDS.getLogin(),
                         CREDS.getPassword()
                 )
+                .schemas("public","db","security")
                 .locations("db")
                 .load();
         flyway.clean();
