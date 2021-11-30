@@ -17,5 +17,8 @@ dependencies {
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("javax.ws.rs:javax.ws.rs-api:2.1.1")
 
+    implementation("org.jooq:jooq:3.15.4")
+
     implementation(project(":init-db"))
+    implementation(project(":jooq-generated"))
 }
