@@ -1,10 +1,14 @@
+package db.init;
+
+import db.creds.JDBCCredentials;
 import org.flywaydb.core.Flyway;
 
 import org.jetbrains.annotations.NotNull;
 
 public final class FlywayInitializer {
 
-    private static final @NotNull JDBCCredentials CREDS = JDBCCredentials.DEFAULT;
+    private static final @NotNull
+    JDBCCredentials CREDS = JDBCCredentials.DEFAULT;
 
     public static void initDB() {
         final var flyway = Flyway.configure()

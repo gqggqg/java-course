@@ -1,3 +1,5 @@
+package db.creds;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

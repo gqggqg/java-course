@@ -1,3 +1,4 @@
+import db.init.FlywayInitializer;
 import api.AuthenticationFilter;
 import server.JettyServer;
 
