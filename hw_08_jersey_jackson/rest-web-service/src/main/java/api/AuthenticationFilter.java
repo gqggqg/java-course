@@ -1,7 +1,11 @@
 package api;
 
+import db.creds.JDBCCredentials;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
@@ -15,7 +19,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
+
+import static generated.security.Tables.*;
 
 @Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
@@ -23,8 +31,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @AllArgsConstructor
     private static class LoginData {
 
-        public String username;
-        public String password;
+        public @NotNull String username;
+        public @NotNull String password;
     }
 
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
@@ -98,8 +106,25 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         return decodedLoginData.split(":");
     }
 
-    private boolean isUserAllowed(LoginData loginData, final Set<String> rolesSet) {
-        return true;
+    private boolean isUserAllowed(@NotNull LoginData loginData, final Set<String> rolesSet) {
+        var cred = JDBCCredentials.DEFAULT;
+
+        try (var connection = DriverManager.getConnection(cred.getUrl(), cred.getLogin(), cred.getPassword())) {
+            final DSLContext context = DSL.using(connection, SQLDialect.POSTGRES);
+            var role = context
+                    .select(ROLE.ROLE_)
+                    .from(USER)
+                    .join(USER_ROLE).on(USER_ROLE.USER_ID.eq(USER.ID))
+                    .join(ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
+                    .where(USER.USERNAME.eq(loginData.username).and(USER.PASSWORD.eq(loginData.password)))
+                    .fetchOneInto(String.class);
+            return role != null && rolesSet.contains(role);
+        } catch (SQLException | RuntimeException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     private void sendUnauthorizedResponse(@NotNull ContainerRequestContext requestContext) {
