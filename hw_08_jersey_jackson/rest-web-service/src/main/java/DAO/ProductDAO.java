@@ -2,6 +2,7 @@ package DAO;
 
 import generated.db.tables.records.ProductRecord;
 
+import json.Product;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,6 +64,15 @@ public final class ProductDAO implements DAO<ProductRecord> {
         context
                 .deleteFrom(PRODUCT)
                 .where(PRODUCT.ID.eq(id))
+                .execute();
+    }
+
+    public void save(@NotNull Product product) {
+        context
+                .insertInto(PRODUCT)
+                .set(PRODUCT.NAME, product.getName())
+                .set(PRODUCT.MANUFACTURER, product.getManufacturer())
+                .set(PRODUCT.QUANTITY, product.getQuantity())
                 .execute();
     }
 
