@@ -10,6 +10,7 @@ import generated.db.tables.records.ProductRecord;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row4;
@@ -47,7 +48,7 @@ public class Product extends TableImpl<ProductRecord> {
     /**
      * The column <code>db.product.id</code>.
      */
-    public final TableField<ProductRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<ProductRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>db.product.name</code>.
@@ -100,6 +101,11 @@ public class Product extends TableImpl<ProductRecord> {
     @Override
     public Schema getSchema() {
         return aliased() ? null : Db.DB;
+    }
+
+    @Override
+    public Identity<ProductRecord, Integer> getIdentity() {
+        return (Identity<ProductRecord, Integer>) super.getIdentity();
     }
 
     @Override
