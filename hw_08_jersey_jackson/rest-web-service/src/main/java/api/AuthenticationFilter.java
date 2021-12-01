@@ -26,7 +26,7 @@ import java.util.*;
 import static generated.security.Tables.*;
 
 @Provider
-public class AuthenticationFilter implements ContainerRequestFilter {
+public final class AuthenticationFilter implements ContainerRequestFilter {
 
     @AllArgsConstructor
     private static class LoginData {
