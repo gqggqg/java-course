@@ -92,8 +92,8 @@ public final class ProductDAO implements DAO<ProductRecord> {
                 .fetch();
     }
 
-    public void delete(@NotNull String name) {
-        context
+    public int delete(@NotNull String name) {
+        return context
                 .deleteFrom(PRODUCT)
                 .where(PRODUCT.NAME.eq(name))
                 .execute();
