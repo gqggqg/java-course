@@ -43,10 +43,9 @@ public final class ProductDAO implements DAO<ProductRecord> {
     public void save(@NotNull ProductRecord record) {
         context
                 .insertInto(PRODUCT)
-                .values(record.getId(),
-                        record.getName(),
-                        record.getManufacturer(),
-                        record.getQuantity())
+                .set(PRODUCT.NAME, record.getName())
+                .set(PRODUCT.MANUFACTURER, record.getManufacturer())
+                .set(PRODUCT.QUANTITY, record.getQuantity())
                 .execute();
     }
 
