@@ -23,9 +23,9 @@ public final class Product {
 
     @JsonCreator
     public Product(@JsonProperty("id") int id,
-                   @JsonProperty("name") String name,
-                   @JsonProperty("manufacturer") String manufacturer,
-                   @JsonProperty("quantity") int quantity) {
+                   @JsonProperty(value = "name", required = true) String name,
+                   @JsonProperty(value = "manufacturer", required = true) String manufacturer,
+                   @JsonProperty(value = "quantity", required = true) int quantity) {
         this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
