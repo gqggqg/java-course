@@ -30,7 +30,7 @@ public final class ProductDatabase {
     private static final JDBCCredentials CREDENTIALS = JDBCCredentials.DEFAULT;
 
     @NotNull
-    public static List<Product> getProducts(Select select, String filter) throws SQLException {
+    public static List<Product> getProducts(@NotNull Select select, String filter) throws SQLException {
         return getProductRecords(select, filter)
                 .stream()
                 .map(p -> new Product(p.getId(), p.getName(), p.getManufacturer(), p.getQuantity()))
@@ -38,7 +38,7 @@ public final class ProductDatabase {
     }
 
     @NotNull
-    private static List<ProductRecord> getProductRecords(Select select, String filter) throws SQLException {
+    private static List<ProductRecord> getProductRecords(@NotNull Select select, String filter) throws SQLException {
         try (var connection = DriverManager.getConnection(
                 CREDENTIALS.getUrl(),
                 CREDENTIALS.getLogin(),
@@ -64,7 +64,7 @@ public final class ProductDatabase {
         return Collections.emptyList();
     }
 
-    public static void addProduct(Product product) throws SQLException {
+    public static void addProduct(@NotNull Product product) throws SQLException {
         try (var connection = DriverManager.getConnection(
                 CREDENTIALS.getUrl(),
                 CREDENTIALS.getLogin(),
@@ -76,7 +76,7 @@ public final class ProductDatabase {
         }
     }
 
-    public static int deleteProductsByName(String name) throws SQLException {
+    public static int deleteProductsByName(@NotNull String name) throws SQLException {
         try (var connection = DriverManager.getConnection(
                 CREDENTIALS.getUrl(),
                 CREDENTIALS.getLogin(),
