@@ -1,0 +1,123 @@
+###
+# Welcome Page
+GET http://localhost:3466/
+
+###
+GET http://localhost:3466/
+Authorization: Basic user user
+
+###
+GET http://localhost:3466/
+Authorization: Basic admin admin
+
+
+###
+# Show All Products
+GET http://localhost:3466/db/products/show/all
+Authorization: Basic user user
+
+###
+GET http://localhost:3466/db/products/show/all 
+Authorization: Basic admin admin
+
+
+###
+# Show Products By Manufacturer
+GET http://localhost:3466/db/products/show/manufacturer
+Authorization: Basic user user
+
+manufacturer_3
+
+###
+GET http://localhost:3466/db/products/show/manufacturer
+Authorization: Basic admin admin
+
+manufacturer_3
+
+###
+GET http://localhost:3466/db/products/show/manufacturer
+Authorization: Basic admin admin
+
+non_existent_manufacturer
+
+###
+GET http://localhost:3466/db/products/show/manufacturer
+Authorization: Basic admin admin
+
+
+###
+# Add Product
+POST http://localhost:3466/db/products/add
+Authorization: Basic user user
+Content-Type: application/json
+
+  {
+    "name": "product_new",
+    "manufacturer": "manufacturer_new",
+    "quantity": 42
+  },
+
+###
+POST http://localhost:3466/db/products/add
+Authorization: Basic admin admin
+Content-Type: application/json
+
+  {
+    "name": "product_2",
+    "manufacturer": "manufacturer_new",
+    "quantity": 42
+  },
+
+###
+POST http://localhost:3466/db/products/add
+Authorization: Basic admin admin
+Content-Type: application/json
+
+###
+POST http://localhost:3466/db/products/add
+Authorization: Basic admin admin
+Content-Type: application/text/plain
+
+  {
+    "name": "product_new",
+    "manufacturer": "manufacturer_new",
+    "quantity": 42
+  },
+
+###
+POST http://localhost:3466/db/products/add
+Authorization: Basic admin admin
+Content-Type: application/text/plain
+
+  {
+    "manufacturer": "manufacturer_new",
+    "quantity": 42
+  },
+
+
+###
+# Delete Product
+POST http://localhost:3466/db/products/delete
+Authorization: Basic user user
+Content-Type: text/plain
+
+product_1
+
+###
+POST http://localhost:3466/db/products/delete
+Authorization: Basic admin admin
+Content-Type: text/plain
+
+product_1
+
+###
+POST http://localhost:3466/db/products/delete
+Authorization: Basic admin admin
+Content-Type: text/plain
+
+non_existent_product
+
+###
+POST http://localhost:3466/db/products/delete
+Authorization: Basic admin admin
+Content-Type: text/plain
