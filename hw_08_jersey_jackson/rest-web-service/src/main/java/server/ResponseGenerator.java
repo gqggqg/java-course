@@ -27,4 +27,12 @@ public final class ResponseGenerator {
                 .header(HttpHeaders.CACHE_CONTROL, "no-cache")
                 .build();
     }
+
+    public static Response getBadRequestResponse(Object entity) {
+        return Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(entity)
+                .header(HttpHeaders.CACHE_CONTROL, "no-cache")
+                .build();
+    }
 }
