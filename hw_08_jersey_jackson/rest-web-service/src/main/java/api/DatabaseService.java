@@ -37,6 +37,10 @@ public final class DatabaseService {
     @Consumes(MediaType.TEXT_PLAIN)
     @RolesAllowed({ROLE_GUEST, ROLE_MANAGER})
     public Response showProductsByManufacturer(String manufacturer) {
+        if (manufacturer == null || manufacturer.isEmpty()) {
+            return ResponseGenerator.getBadRequestResponse("Manufacturer is not set.");
+        }
+
         return getResponseToShowProductsByFilterRequest(Select.BY_MANUFACTURER, manufacturer);
     }
 
@@ -46,6 +50,10 @@ public final class DatabaseService {
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed(ROLE_MANAGER)
     public Response addProduct(Product product) {
+        if (product == null) {
+            return ResponseGenerator.getBadRequestResponse("Product is not set.");
+        }
+
         try {
             ProductDatabase.addProduct(product);
             return ResponseGenerator.getOkResponse("Product was added.");
@@ -62,6 +70,10 @@ public final class DatabaseService {
     @Consumes(MediaType.TEXT_PLAIN)
     @RolesAllowed(ROLE_MANAGER)
     public Response deleteProduct(String productName) {
+        if (productName == null || productName.isEmpty()) {
+            return ResponseGenerator.getBadRequestResponse("Product name is not set.");
+        }
+
         try {
             var numberOfDeletions = ProductDatabase.deleteProductsByName(productName);
             if (numberOfDeletions > 0) {
