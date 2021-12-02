@@ -21,6 +21,7 @@ public final class DatabaseService {
 
     private static final String ROLE_GUEST = "guest";
     private static final String ROLE_MANAGER = "manager";
+    private static final String INTERNAL_SERVER_ERROR_RESPONSE_MESSAGE = "Something went wrong.";
 
     @GET
     @Path("/products/show/all")
@@ -51,7 +52,7 @@ public final class DatabaseService {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.getInternalServerErrorResponse("Something went wrong.");
+            return ResponseGenerator.getInternalServerErrorResponse(INTERNAL_SERVER_ERROR_RESPONSE_MESSAGE);
         }
     }
 
@@ -69,7 +70,7 @@ public final class DatabaseService {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.getInternalServerErrorResponse("Something went wrong.");
+            return ResponseGenerator.getInternalServerErrorResponse(INTERNAL_SERVER_ERROR_RESPONSE_MESSAGE);
         }
 
         return ResponseGenerator.getNotFoundResponse("Products with this name are not in the database.");
@@ -87,7 +88,7 @@ public final class DatabaseService {
         } catch (SQLException | IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.getInternalServerErrorResponse("Something went wrong.");
+            return ResponseGenerator.getInternalServerErrorResponse(INTERNAL_SERVER_ERROR_RESPONSE_MESSAGE);
         }
     }
 }
