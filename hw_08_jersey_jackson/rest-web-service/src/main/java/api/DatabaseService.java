@@ -69,7 +69,7 @@ public final class DatabaseService {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
-            return ResponseGenerator.getInternalServerErrorResponse("Cannot add a product.");
+            return ResponseGenerator.getInternalServerErrorResponse("Something went wrong.");
         }
 
         return ResponseGenerator.getNotFoundResponse("Products with this name are not in the database.");
