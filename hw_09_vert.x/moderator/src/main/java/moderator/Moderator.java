@@ -134,7 +134,7 @@ public class Moderator extends AbstractVerticle {
 
     private void subscribeToAcceptUserIntoClan() {
         vertx.eventBus().consumer(
-                Config.USER_JOIN_EVENT,
+                Config.USER_JOIN_EVENT + "_" + clanName,
                 this::tryToAddUserToClan);
     }
 
