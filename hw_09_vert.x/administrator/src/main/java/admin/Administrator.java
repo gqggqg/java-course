@@ -260,16 +260,19 @@ public class Administrator extends AbstractVerticle {
         Promise<Void> promise = Promise.promise();
 
         var newMaxNumber = getRandomNumberOfMembers(members.role);
-        var jsonObject = DataGenerator.getJsonObjectOfRoleMembersData(members.number, newMaxNumber);
+        var newNumber = newMaxNumber > members.maxNumber ? 0 : members.number;
+        var jsonObject = DataGenerator.getJsonObjectOfRoleMembersData(newNumber, newMaxNumber);
 
         asyncMap.put(clanName, jsonObject, completion -> {
             if (completion.succeeded()) {
                 members.maxNumber = newMaxNumber;
+                members.number = newNumber;
                 System.out.printf(
                         "New max number of %s in the %s clan: %d\n",
                         members.role, clanName, members.maxNumber);
                 if (members.isMaximum()) {
                     askMembersToLeaveClan(members);
+                    System.out.println("The administrator of the clan " + clanName + " kicked all the " + members.role);
                 }
             }
             promise.complete();
