@@ -94,7 +94,7 @@ public class Administrator extends AbstractVerticle {
     }
 
     private void sendClanInactivationEvent() {
-        vertx.eventBus().publish(Config.INACTIVE_CLAN_APPEARED_EVENT, clanName);
+        vertx.eventBus().send(Config.INACTIVE_CLAN_APPEARED_EVENT, clanName);
     }
 
     private void tryToJoinAnotherClan(@NotNull Promise<Void> promise) {

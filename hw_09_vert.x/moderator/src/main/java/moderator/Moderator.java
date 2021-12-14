@@ -96,7 +96,7 @@ public class Moderator extends AbstractVerticle {
 
     private void startToSendOutRequestsToJoinClan() {
         timerOfPeriodicRequestsToJoinClan = vertx.setPeriodic(3000,
-                timer -> vertx.eventBus().publish(Config.MODERATOR_JOIN_EVENT, moderatorName));
+                timer -> vertx.eventBus().send(Config.MODERATOR_JOIN_EVENT, moderatorName));
     }
 
     private Future<Void> getInfoAboutClanUsers() {
