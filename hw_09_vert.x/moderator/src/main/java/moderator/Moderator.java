@@ -13,7 +13,6 @@ import io.vertx.core.shareddata.AsyncMap;
 
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.crypto.Data;
 import java.util.Objects;
 
 public class Moderator extends AbstractVerticle {
@@ -82,11 +81,7 @@ public class Moderator extends AbstractVerticle {
 
         vertx.cancelTimer(timerOfPeriodicRequestsToJoinClan);
         getInfoAboutClanUsers()
-                .onSuccess(v -> {
-                    System.out.println("SUPER");
-                    subscribeToAcceptUserIntoClan();
-                })
-                .onFailure(v -> System.out.println("FAIL"));
+                .onSuccess(v -> subscribeToAcceptUserIntoClan());
     }
 
     private void kickOutClanEventHandler(@NotNull Message<String> event) {
