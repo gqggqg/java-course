@@ -3,6 +3,7 @@ package admin;
 import clan.ClanRoleData;
 import clan.Config;
 
+import data.DataGenerator;
 import io.vertx.core.*;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
@@ -32,8 +33,8 @@ public class Administrator extends AbstractVerticle {
     }
 
     public Administrator() {
-        this.moderators = new ClanRoleData("moderator");
-        this.users = new ClanRoleData("user");
+        this.moderators = new ClanRoleData(Config.ROLE_MODERATOR);
+        this.users = new ClanRoleData(Config.ROLE_USER);
         this.inClan = false;
         this.clanIsNew = true;
     }
@@ -41,7 +42,7 @@ public class Administrator extends AbstractVerticle {
     @Override
     public void start(Promise<Void> startPromise) {
         if (clanName == null) {
-            clanName = getRandomClan();
+            clanName = DataGenerator.getRandomName("clan_");
         }
 
         vertx.sharedData().<String, Boolean>getAsyncMap(Config.CLAN_MAP_NAME, clans -> {
@@ -259,7 +260,7 @@ public class Administrator extends AbstractVerticle {
         Promise<Void> promise = Promise.promise();
 
         var newMaxNumber = getRandomNumberOfMembers(members.role);
-        var jsonObject = getJsonObjectOfMembers(members.number, newMaxNumber);
+        var jsonObject = DataGenerator.getJsonObjectOfRoleMembersData(members.number, newMaxNumber);
 
         asyncMap.put(clanName, jsonObject, completion -> {
             if (completion.succeeded()) {
@@ -308,7 +309,7 @@ public class Administrator extends AbstractVerticle {
     }
 
     private void tryAddModerator(@NotNull AsyncMap<String, JsonObject> asyncMap, String moderatorName) {
-        var jsonObject = getJsonObjectOfMembers(moderators.number + 1, moderators.maxNumber);
+        var jsonObject = DataGenerator.getJsonObjectOfRoleMembersData(moderators.number + 1, moderators.maxNumber);
 
         asyncMap.put(clanName, jsonObject, completion -> {
             if (completion.succeeded()) {
@@ -318,22 +319,9 @@ public class Administrator extends AbstractVerticle {
         });
     }
 
-    private @NotNull String getRandomClan() {
-        final ThreadLocalRandom random = ThreadLocalRandom.current();
-        final var postfixClassNumber = random.nextInt(Integer.MAX_VALUE);
-        return "clan_" + postfixClassNumber;
-    }
-
     private int getRandomNumberOfMembers(String role) {
         return ThreadLocalRandom.current().nextInt(Objects.equals(role, moderators.role) ?
                 Config.MAX_NUMBER_OF_MODERATORS :
                 Config.MAX_NUMBER_OF_USER);
-    }
-
-    private @NotNull JsonObject getJsonObjectOfMembers(int number, int maxNumber) {
-        var jsonObject = new JsonObject();
-        jsonObject.put(Config.ROLE_NUMBER_KEY, number);
-        jsonObject.put(Config.ROLE_MAX_NUMBER_KEY, maxNumber);
-        return jsonObject;
     }
 }
