@@ -20,4 +20,8 @@ public class DataGenerator {
         jsonObject.put(Config.ROLE_MAX_NUMBER_KEY, maxNumber);
         return jsonObject;
     }
+
+    public static @NotNull String getUserJoinEventAddress(String clanName) {
+        return Config.USER_JOIN_EVENT + "_" + clanName;
+    }
 }

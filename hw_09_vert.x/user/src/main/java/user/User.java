@@ -105,7 +105,7 @@ public class User extends AbstractVerticle {
         asyncMap.entries(clans -> clans.result().forEach((clan, isActive) -> {
             if (isActive && !isSent.get()) {
                 isSent.set(true);
-                vertx.eventBus().send(Config.USER_JOIN_EVENT + "_" + clan, userName);
+                vertx.eventBus().send(DataGenerator.getUserJoinEventAddress(clan), userName);
             }
         }));
     }
