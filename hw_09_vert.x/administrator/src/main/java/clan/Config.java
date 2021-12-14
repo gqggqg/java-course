@@ -2,8 +2,8 @@ package clan;
 
 public class Config {
 
-    public final static String ROLE_USER = "user";
-    public final static String ROLE_MODERATOR = "moderator";
+    public final static String ROLE_USER = "users";
+    public final static String ROLE_MODERATOR = "moderators";
 
     public final static String MODERATORS_KICK_EVENT = "clan.moderators.kick";
     public final static String MODERATOR_JOIN_EVENT = "clan.moderators.join";
