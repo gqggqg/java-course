@@ -22,6 +22,7 @@ public class Moderator extends AbstractVerticle {
 
     private boolean inClan;
     private String clanName;
+
     private long timerOfPeriodicRequestsToJoinClan;
 
     public Moderator() {
@@ -70,6 +71,10 @@ public class Moderator extends AbstractVerticle {
     }
 
     private void joinClanEventHandler(@NotNull Message<String> event) {
+        if (inClan) {
+            return;
+        }
+
         clanName = event.body();
         inClan = true;
         System.out.println("Moderator " + moderatorName + " has joined the " + clanName + " clan.");
@@ -86,7 +91,7 @@ public class Moderator extends AbstractVerticle {
         }
         inClan = false;
         System.out.println("Moderator " + moderatorName + " has left the " + clanName + " clan.");
-        subscribeToClanJoiningEvent();
+        startToSendOutRequestsToJoinClan();
     }
 
     private void startToSendOutRequestsToJoinClan() {
