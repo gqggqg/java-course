@@ -21,8 +21,8 @@ public class Administrator extends AbstractVerticle {
     private final ClanRoleData users;
 
     private String clanName;
-    private Boolean clanIsNew;
-    private Boolean inClan;
+    private boolean clanIsNew;
+    private boolean inClan;
 
     private MessageConsumer<String> joinAnotherClanConsumer;
 
