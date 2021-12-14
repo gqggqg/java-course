@@ -1,6 +1,7 @@
 package admin;
 
 import clan.ClanRoleData;
+import clan.Config;
 
 import io.vertx.core.*;
 import io.vertx.core.eventbus.Message;
@@ -15,19 +16,6 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Administrator extends AbstractVerticle {
-
-    private final static String USERS_KICK_EVENT = "clan.users.kick";
-    private final static String MODERATORS_KICK_EVENT = "clan.moderators.kick";
-    private final static String MODERATOR_JOIN_EVENT = "clan.moderators.join";
-    private final static String INACTIVE_CLAN_APPEARED_EVENT = "clan.admin.inactive";
-
-    private final static String CLAN_MAP_NAME = "clans";
-
-    private final static String ROLE_NUMBER_KEY = "number";
-    private final static String ROLE_MAX_NUMBER_KEY = "maxNumber";
-
-    private final static int MAX_NUMBER_OF_MODERATORS = 10;
-    private final static int MAX_NUMBER_OF_USER = 10;
 
     private final ClanRoleData moderators;
     private final ClanRoleData users;
@@ -56,7 +44,7 @@ public class Administrator extends AbstractVerticle {
             clanName = getRandomClan();
         }
 
-        vertx.sharedData().<String, Boolean>getAsyncMap(CLAN_MAP_NAME, clans -> {
+        vertx.sharedData().<String, Boolean>getAsyncMap(Config.CLAN_MAP_NAME, clans -> {
             if (clans.succeeded()) {
                 clans.result().get(clanName, isActiveAsyncResult -> {
                     if (isActiveAsyncResult.succeeded()) {
@@ -88,7 +76,7 @@ public class Administrator extends AbstractVerticle {
     }
 
     private void inactiveClan(Promise<Void> promise) {
-        vertx.sharedData().<String, Boolean>getAsyncMap(CLAN_MAP_NAME, clans -> {
+        vertx.sharedData().<String, Boolean>getAsyncMap(Config.CLAN_MAP_NAME, clans -> {
             if (clans.succeeded()) {
                 clans.result().put(clanName, false, completion -> {
                     if (completion.succeeded()) {
@@ -105,7 +93,7 @@ public class Administrator extends AbstractVerticle {
     }
 
     private void sendClanInactivationEvent() {
-        vertx.eventBus().publish(INACTIVE_CLAN_APPEARED_EVENT, clanName);
+        vertx.eventBus().publish(Config.INACTIVE_CLAN_APPEARED_EVENT, clanName);
     }
 
     private void tryToJoinAnotherClan(@NotNull Promise<Void> promise) {
@@ -120,7 +108,7 @@ public class Administrator extends AbstractVerticle {
         tryToTakeInactiveClan()
                 .onSuccess(v -> promise.complete())
                 .onFailure(err -> {
-                    joinAnotherClanConsumer = vertx.eventBus().consumer(INACTIVE_CLAN_APPEARED_EVENT);
+                    joinAnotherClanConsumer = vertx.eventBus().consumer(Config.INACTIVE_CLAN_APPEARED_EVENT);
                     joinAnotherClanConsumer.completionHandler(promise);
                     joinAnotherClanConsumer.handler(event -> {
                         clanName = event.body();
@@ -134,7 +122,7 @@ public class Administrator extends AbstractVerticle {
     private Future<Void> tryToTakeInactiveClan() {
         Promise<Void> promise = Promise.promise();
 
-        vertx.sharedData().<String, Boolean>getAsyncMap(CLAN_MAP_NAME, mapAsyncResult -> {
+        vertx.sharedData().<String, Boolean>getAsyncMap(Config.CLAN_MAP_NAME, mapAsyncResult -> {
             if (mapAsyncResult.succeeded()) {
                 mapAsyncResult.result().entries(clans -> {
                     List<Future> futures = new ArrayList<>();
@@ -170,7 +158,7 @@ public class Administrator extends AbstractVerticle {
             return promise.future();
         }
 
-        vertx.sharedData().<String, Boolean>getAsyncMap(CLAN_MAP_NAME, clans -> {
+        vertx.sharedData().<String, Boolean>getAsyncMap(Config.CLAN_MAP_NAME, clans -> {
             if (clans.succeeded()) {
                 clans.result().put(clanName, true, completion -> {
                     if (completion.succeeded()) {
@@ -231,8 +219,8 @@ public class Administrator extends AbstractVerticle {
                 mapAsyncResult.result().get(clanName, jsonObjectAsyncResult -> {
                     if (jsonObjectAsyncResult.succeeded()) {
                         var jsonObject = jsonObjectAsyncResult.result();
-                        members.number = jsonObject.getInteger(ROLE_NUMBER_KEY);
-                        members.maxNumber = jsonObject.getInteger(ROLE_MAX_NUMBER_KEY);
+                        members.number = jsonObject.getInteger(Config.ROLE_NUMBER_KEY);
+                        members.maxNumber = jsonObject.getInteger(Config.ROLE_MAX_NUMBER_KEY);
                         promise.complete();
                     } else {
                         promise.fail(jsonObjectAsyncResult.cause());
@@ -291,8 +279,8 @@ public class Administrator extends AbstractVerticle {
 
     private void askMembersToLeaveClan(@NotNull ClanRoleData members) {
         var eventAddress = Objects.equals(members.role, moderators.role) ?
-                MODERATORS_KICK_EVENT :
-                USERS_KICK_EVENT;
+                Config.MODERATORS_KICK_EVENT :
+                Config.USERS_KICK_EVENT;
         vertx.eventBus().publish(eventAddress, clanName);
     }
 
@@ -300,7 +288,7 @@ public class Administrator extends AbstractVerticle {
         Promise<Void> promise = Promise.promise();
 
         vertx.eventBus().consumer(
-                MODERATOR_JOIN_EVENT,
+                Config.MODERATOR_JOIN_EVENT,
                 this::moderatorJoinEventHandler
         ).completionHandler(promise);
 
@@ -338,14 +326,14 @@ public class Administrator extends AbstractVerticle {
 
     private int getRandomNumberOfMembers(String role) {
         return ThreadLocalRandom.current().nextInt(Objects.equals(role, moderators.role) ?
-                MAX_NUMBER_OF_MODERATORS :
-                MAX_NUMBER_OF_USER);
+                Config.MAX_NUMBER_OF_MODERATORS :
+                Config.MAX_NUMBER_OF_USER);
     }
 
     private @NotNull JsonObject getJsonObjectOfMembers(int number, int maxNumber) {
         var jsonObject = new JsonObject();
-        jsonObject.put(ROLE_NUMBER_KEY, number);
-        jsonObject.put(ROLE_MAX_NUMBER_KEY, maxNumber);
+        jsonObject.put(Config.ROLE_NUMBER_KEY, number);
+        jsonObject.put(Config.ROLE_MAX_NUMBER_KEY, maxNumber);
         return jsonObject;
     }
 }
